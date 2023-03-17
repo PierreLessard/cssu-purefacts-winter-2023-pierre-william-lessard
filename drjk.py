@@ -29,33 +29,21 @@ def solve(file_name):
         # Skip header row
         next(csv_reader)
 
-        
+
         for row in csv_reader:
             participant, start_time, end_time = row
             
             # Check if there is no participant name (split by commas gives an empty string)
             if not participant:
-                times[-1].append([txt_time_real(start_time), txt_time_real(end_time)])
+                times.append([txt_time_real(start_time), txt_time_real(end_time)])
             else:
-                times.append([[txt_time_real(start_time), txt_time_real(end_time)]])
+                times.append([txt_time_real(start_time), txt_time_real(end_time)])
 
 
-    for i in times:
-        i.sort(key=lambda x: x[0])
 
-    not_poss_times = []
-    for c,i in enumerate(times):
-        last_time = 9 * 60
-        for j in i:
-            if last_time < j[0]:
-                not_poss_times.append([last_time, j[0]])
-            last_time = max(last_time, j[1])
-        
-        if i[-1][-1] < 17*60:
-            not_poss_times.append([i[-1][-1], 17*60])
-
-
-    not_poss_times.sort()
+    
+    times.sort()
+    not_poss_times = times
 
     res = [[9*60, 9*60]]
 
@@ -77,8 +65,10 @@ def solve(file_name):
             out = [res[i-1][1], res[i][0]]
 
     if dur <= 0:
+        print("None", dur)
         return("None", dur)
     else:
+        print(real_time_txt(out[0]), dur)
         return(real_time_txt(out[0]), dur)
     
 if __name__ == "__main__":
